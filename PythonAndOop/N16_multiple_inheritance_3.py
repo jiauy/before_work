@@ -1,5 +1,4 @@
-#过时了
-class A:
+class A(object):
 
     def dothis(self):
         print("doing this in A")
