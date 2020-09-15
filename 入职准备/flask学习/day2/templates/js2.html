@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <script>
+            window.onload=function(){
+
+            }
+        </script>
+    </head>
+    <body>
+        <input type="button" value='全选' onclick="quanxuan()">
+        <input type="button" value='反选' onclick="fanxuan()">
+        <input type="button" value='全不选' onclick='quanbuxuan()'>
+        <div id='aaa'>
+            <h4>期望的工作地点</h4>
+            <input type="checkbox" name='北京' value='beijing'>
+            <input type="checkbox" name='sh'>
+            <input type="checkbox" name='hf'>
+            <input type="checkbox" name='gz'>
+            <input type="checkbox" name='sz'>
+            <input type="checkbox" name='hz'>
+        </div>
+
+    </body>
+    <script>
+            var ob1=document.getElementById('aaa')
+            var ob2=ob1.getElementsByTagName('input')
+            function quanxuan(){
+                for (var i=0;i<ob2.length;i++){
+                    ob2[i].checked=true
+                }
+            }
+            function fanxuan(){
+                for  (var i=0;i<ob2.length;i++){
+                    if (ob2[i].checked==true){
+                        ob2[i].checked=false
+                    }else{
+                        ob2[i].checked=true
+                    }
+                }
+            }
+            function quanbuxuan(){
+                for (var i=0;i<ob2.length;i++){
+                    ob2[i].checked=false
+                }
+            }
+    </script>
+</html>
