@@ -1,4 +1,4 @@
-class YourClass(object):
+class YourClass:
     classy = 10
 
     def set_val(self):
