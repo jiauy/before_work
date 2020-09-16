@@ -1,4 +1,4 @@
-class MyNum():
+class MyNum:
     def __init__(self):
         print("Calling the __init__() constructor!\n")
         self.val = 0
@@ -7,7 +7,7 @@ class MyNum():
         self.val = self.val + 1
         print(self.val)
 
-
-dd = MyNum()
-dd.increment()
-dd.increment()
+if __name__ == '__main__':
+    dd = MyNum()
+    dd.increment()
+    dd.increment()

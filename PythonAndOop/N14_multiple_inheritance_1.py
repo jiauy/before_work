@@ -16,10 +16,10 @@ class C:
 class D(B, C):
     pass
 
+if __name__ == '__main__':
+    d_instance = D()
+    d_instance.dothis()  # <== This should print from class A.
 
-d_instance = D()
-d_instance.dothis()  # <== This should print from class A.
-
-print("\nPrint the Method Resolution Order")
-print(D.mro())
+    print("\nPrint the Method Resolution Order")
+    print(D.mro())
 

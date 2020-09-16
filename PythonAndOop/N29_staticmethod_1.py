@@ -14,11 +14,12 @@ class MyClass:
             return value
 
 
-a = MyClass(5)
-b = MyClass(10)
-c = MyClass(15)
+if __name__ == '__main__':
+    a = MyClass(5)
+    b = MyClass(10)
+    c = MyClass(15)
 
-print(a.val)
-print(b.val)
-print(c.val)
-print(a.filterint(100))
+    print(a.val)
+    print(b.val)
+    print(c.val)
+    print(a.filterint(100))

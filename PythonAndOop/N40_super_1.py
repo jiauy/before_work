@@ -12,5 +12,7 @@ class ChildClass(MyClass):
         # Calling the `func()` method from the Parent class.
         super(ChildClass, self).func()
 
-my_instance_2 = ChildClass()
-my_instance_2.func()
+
+if __name__ == '__main__':
+    my_instance_2 = ChildClass()
+    my_instance_2.func()

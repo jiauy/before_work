@@ -23,10 +23,12 @@ class MyClass(My_ABC_Class):
         print("\nCalling the hello() method")
         print("I'm *not* part of the Abstract Methods defined in My_ABC_Class()")
 
-my_class = MyClass()
 
-my_class.set_val(10)
-print(my_class.get_val())
-my_class.hello()
+if __name__ == '__main__':
+    my_class = MyClass()
 
-#错误使用的例子
+    my_class.set_val(10)
+    print(my_class.get_val())
+    my_class.hello()
+
+    #错误使用的例子

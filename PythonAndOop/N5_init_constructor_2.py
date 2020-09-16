@@ -10,7 +10,7 @@ class MyNum():
         self.value = self.value + 1
         print(self.value)
 
-
-a = MyNum(10)
-a.increment()
-a.increment()
+if __name__ == '__main__':
+    a = MyNum(10)
+    a.increment()
+    a.increment()

@@ -19,5 +19,7 @@ class D(B, C):
         print("D")
         super(D, self).foo()
 
-d = D()
-d.foo()
+
+if __name__ == '__main__':
+    d = D()
+    d.foo()

@@ -16,4 +16,6 @@ def handle_exceptions(func_name):
 def divide(x, y):
     return x / y
 
-print(divide(8, 0))
+
+if __name__ == '__main__':
+    print(divide(8, 0))

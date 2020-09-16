@@ -14,10 +14,12 @@ class InstanceCounter:
     def get_count(self):
         return InstanceCounter.count
 
-a = InstanceCounter(5)
-b = InstanceCounter(10)
-c = InstanceCounter(15)
 
-for obj in (a, b, c):
-    print("Value of object: %s" % (obj.get_val))
-    print("Count : %s " % (obj.get_count))
+if __name__ == '__main__':
+    a = InstanceCounter(5)
+    b = InstanceCounter(10)
+    c = InstanceCounter(15)
+
+    for obj in (a, b, c):
+        print("Value of object: %s" % (obj.get_val))
+        print("Count : %s " % (obj.get_count))

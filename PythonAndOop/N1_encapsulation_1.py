@@ -1,5 +1,3 @@
-#封装练习
-#没必要，默认继承object。
 class MyClass:
     def set_val(self,val):
         self.value = val
@@ -8,3 +6,7 @@ class MyClass:
         print(self.value)
         return self.value
 
+if __name__ == '__main__':
+    a=MyClass()
+    a.set_val(5)
+    print(a.value)

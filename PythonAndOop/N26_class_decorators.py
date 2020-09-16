@@ -15,6 +15,6 @@ class Name:
     def full_name(self):
         return " ".join([self.first_name, self.last_name])
 
-
-result = Name("Vimal", "A.R").full_name()
-print("Full name: {0}".format(result))
+if __name__ == '__main__':
+    result = Name("Vimal", "A.R").full_name()
+    print("Full name: {0}".format(result))

@@ -19,14 +19,14 @@ class InstanceCounter:
 # b = InstanceCounter(10)
 # c = InstanceCounter(15)
 # InstanceCounter.count=5
+if __name__ == '__main__':
+    print(a.count1)
 
-print(a.count1)
+    # a.count1='asdf'
+    # print(InstanceCounter.count1)
+    # del a.count1
+    for obj in (a, b, c):
+        print("value of obj: %s" % obj.get_val())
+        print("Count : %s" % obj.get_count())
 
-# a.count1='asdf'
-# print(InstanceCounter.count1)
-# del a.count1
-for obj in (a, b, c):
-    print("value of obj: %s" % obj.get_val())
-    print("Count : %s" % obj.get_count())
-
-print(InstanceCounter.count)
+    print(InstanceCounter.count)

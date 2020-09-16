@@ -16,14 +16,3 @@ class Cat(Animal):
         print("%s shred the string!" % self.name)
 
 
-d = Dog("Roger")
-c = Cat("Fluffy")
-
-d.fetch("paper")
-d.eat("dog food")
-print("--------")
-c.eat("cat food")
-c.swatstring()
-
-c.fetch("frizbee")
-d.swatstring()

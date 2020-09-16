@@ -15,16 +15,18 @@ class MyClass:
     def get_count(cls):
         return cls.count
 
-object_1 = MyClass(10)
-print("\nValue of object : %s" % object_1.get_val())
-print(MyClass.get_count())
 
-object_2 = MyClass(20)
-print("\nValue of object : %s" % object_2.get_val())
-print(MyClass.get_count())
+if __name__ == '__main__':
+    object_1 = MyClass(10)
+    print("\nValue of object : %s" % object_1.get_val())
+    print(MyClass.get_count())
 
-object_3 = MyClass(40)
-print("\nValue of object : %s" % object_3.get_val())
-print(MyClass.get_count())
+    object_2 = MyClass(20)
+    print("\nValue of object : %s" % object_2.get_val())
+    print(MyClass.get_count())
 
-#降低内存开销
+    object_3 = MyClass(40)
+    print("\nValue of object : %s" % object_3.get_val())
+    print(MyClass.get_count())
+
+    #降低内存开销

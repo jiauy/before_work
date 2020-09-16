@@ -13,6 +13,6 @@ def adder(a, b):
 def subtractor(a, b):
     return a - b
 
-
-print(adder(10, 20))
-print(subtractor(6, 1))
+if __name__ == '__main__':
+    print(adder(10, 20))
+    print(subtractor(6, 1))

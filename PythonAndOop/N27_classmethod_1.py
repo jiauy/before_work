@@ -7,11 +7,12 @@ class MyClass:
         print("Self/Instance method 1")
 
 
-print("Calling the class `MyClass` directly without an instance:")
-MyClass.class_1()
-# MyClass.class_2()
+if __name__ == '__main__':
+    print("Calling the class `MyClass` directly without an instance:")
+    MyClass.class_1()
+    # MyClass.class_2()
 
 
-print("\nCalling the instance `MyClass()`:")
-MyClass().class_1()
-MyClass().class_2()
+    print("\nCalling the instance `MyClass()`:")
+    MyClass().class_1()
+    MyClass().class_2()

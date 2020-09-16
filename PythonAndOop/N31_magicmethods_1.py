@@ -7,6 +7,7 @@ class PrintList(object):
         return str(self.mylist)
 
 
-printlist = PrintList(["a", "b", "c"])
-print(printlist.__repr__())
-print(printlist)
+if __name__ == '__main__':
+    printlist = PrintList(["a", "b", "c"])
+    print(printlist.__repr__())
+    print(printlist)

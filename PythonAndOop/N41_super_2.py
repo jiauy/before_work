@@ -24,7 +24,9 @@ class MyChildClass(MyClass):
     def print_doc(self):
         print("Documentation for MyChild Class")
 
-my_instance = MyChildClass()
-my_instance.my_set_val(100)
-print(my_instance.my_get_val())
-my_instance.print_doc()
+
+if __name__ == '__main__':
+    my_instance = MyChildClass()
+    my_instance.my_set_val(100)
+    print(my_instance.my_get_val())
+    my_instance.print_doc()

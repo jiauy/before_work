@@ -4,7 +4,9 @@ class YourClass(object):
     def set_val(self):
         self.insty = 100
 
-dd = YourClass()
-dd.classy
-dd.set_val()
-dd.insty
+
+if __name__ == '__main__':
+    dd = YourClass()
+    dd.classy
+    dd.set_val()
+    dd.insty

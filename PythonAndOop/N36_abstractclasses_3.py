@@ -23,9 +23,11 @@ class MyClass(My_ABC_Class):
         print("\nCalling the hello() method")
         print("I'm *not* part of the Abstract Methods defined in My_ABC_Class()")
 
-my_class = My_ABC_Class()
 
-my_class.set_val(10)
-print(my_class.get_val())
-my_class.hello()
-#抽象类不能被直接使用
+if __name__ == '__main__':
+    my_class = My_ABC_Class()
+
+    my_class.set_val(10)
+    print(my_class.get_val())
+    my_class.hello()
+    #抽象类不能被直接使用

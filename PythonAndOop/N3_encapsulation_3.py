@@ -1,4 +1,3 @@
-
 class MyInteger:
     def set_val(self, val):
         try:
@@ -15,4 +14,7 @@ class MyInteger:
         print(self.val)
 if __name__ == '__main__':
     a=MyInteger()
+    a.set_val('5')
+    a.get_val()
+    a.increment_val()
     a.get_val()

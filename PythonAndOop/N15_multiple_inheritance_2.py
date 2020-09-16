@@ -19,9 +19,11 @@ class D(B, C):
     D inheriting from both B and C"""
     pass
 
-d_instance = D()
 
-d_instance.dothis()
+if __name__ == '__main__':
+    d_instance = D()
 
-print("\nPrint the Method Resolution Order")
-print(D.mro())
+    d_instance.dothis()
+
+    print("\nPrint the Method Resolution Order")
+    print(D.mro())

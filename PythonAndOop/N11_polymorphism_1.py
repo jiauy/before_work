@@ -24,5 +24,7 @@ class Cat(Animal):
     def show_affection(self):
         print('{0} purrs'.format(self.name))
 
-for a in (Dog('Rover'), Cat('Fluffy'), Cat('Lucky'), Dog('Scout')):
-    a.show_affection()
+
+if __name__ == '__main__':
+    for a in (Dog('Rover'), Cat('Fluffy'), Cat('Lucky'), Dog('Scout')):
+        a.show_affection()

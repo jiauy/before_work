@@ -7,12 +7,12 @@ class Time(Date):
     def get_time(self):
         print("07:00:00")
 
+if __name__ == '__main__':
+    dt = Date()
+    dt.get_date()
+    print("--------")
 
-dt = Date()
-dt.get_date()
-print("--------")
+    tm = Time()
+    tm.get_time()
 
-tm = Time()
-tm.get_time()
-
-tm.get_date()
+    tm.get_date()
