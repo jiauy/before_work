@@ -123,3 +123,25 @@ def test_N9_inheritance_1(date,time):
     n9=N9_inheritance_1.Time()
     assert date==n9.get_date(date) and time==n9.get_time(time)
 
+@pytest.mark.parametrize(
+    "init_value",
+    [
+        1,
+    ]
+)
+def test_N18_instance_methods_2(init_value):
+    count=N18_instance_methods_2.InstanceCounter.count
+    a=N18_instance_methods_2.InstanceCounter(init_value)
+    assert init_value==a.get_val() and count+1==N18_instance_methods_2.InstanceCounter.count
+
+@pytest.mark.parametrize(
+    "init_value,set_value",
+    [
+        [1,100],
+    ]
+)
+def test_N18_instance_methods_2(init_value,set_value):
+    count=N18_instance_methods_2.InstanceCounter.count
+    a=N18_instance_methods_2.InstanceCounter(init_value)
+    a.set_val(set_value)
+    assert set_value==a.get_val() and count+1==N18_instance_methods_2.InstanceCounter.count
