@@ -145,3 +145,68 @@ def test_N18_instance_methods_2(init_value,set_value):
     a=N18_instance_methods_2.InstanceCounter(init_value)
     a.set_val(set_value)
     assert set_value==a.get_val() and count+1==N18_instance_methods_2.InstanceCounter.count
+
+@pytest.mark.parametrize(
+    "x,y,expected",
+    [
+        [1,1,1],
+        [1,0,None]
+    ]
+)
+def test_N23_decorators_5(x,y,expected):
+    N23_decorators_5.divide(x,y)
+    assert expected==N23_decorators_5.divide(x,y)
+
+@pytest.mark.parametrize(
+    "x,y,expected_add,expected_sub",
+    [
+        [2,1,6,2],
+    ]
+)
+def test_N25_decorators_7(x,y,expected_add,expected_sub):
+    assert expected_add==N25_decorators_7.adder(x,y) and expected_sub==N25_decorators_7.subtractor(x,y)
+
+@pytest.mark.parametrize(
+    "first_name, last_name,expected",
+    [
+        ['Dong', 'Liu','Dr. Dong Liu'],
+    ]
+)
+def test_N26_class_decorators(first_name, last_name,expected):
+    n26=N26_class_decorators.Name(first_name, last_name)
+    assert expected==n26.full_name()
+
+@pytest.mark.parametrize(
+    "init_val, result",
+    [
+        ['test','test'],
+    ]
+)
+def test_N28_classmethod_2(set_val, result):
+    count=N28_classmethod_2.MyClass.count
+    instance=N28_classmethod_2.MyClass(init_val)
+    assert result==instance.get_val() and count+1==instance.get_count()
+
+@pytest.mark.parametrize(
+    "set_val, result",
+    [
+        ['test','test'],
+    ]
+)
+def test_N28_classmethod_2(set_val, result):
+    count=N28_classmethod_2.MyClass.count
+    instance=N28_classmethod_2.MyClass('init_value')
+    instance.set_val(set_val)
+    assert result==instance.get_val() and count+1==instance.get_count()
+
+@pytest.mark.parametrize(
+    "set_val,expected",
+    [
+        [1,1],
+        [1.5,0],
+
+    ]
+)
+def test_N29_staticmethod_1(set_val,expected):
+    n29=N29_staticmethod_1.MyClass('init_value')
+    assert expected==n29.filterint(set_val)
