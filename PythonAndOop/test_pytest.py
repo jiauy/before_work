@@ -210,3 +210,26 @@ def test_N28_classmethod_2(set_val, result):
 def test_N29_staticmethod_1(set_val,expected):
     n29=N29_staticmethod_1.MyClass('init_value')
     assert expected==n29.filterint(set_val)
+
+@pytest.mark.parametrize(
+    "set_val,expected",
+    [
+        [[1, 2, 3],'[1, 2, 3]'],  #注意非PEP8书写，但输出会被规范
+
+    ]
+)
+def test_N31_magicmethods_1(set_val,expected):
+    n31=N31_magicmethods_1.PrintList(set_val)
+    assert expected==n31.__repr__()
+
+@pytest.mark.parametrize(
+    "set_val,expected",
+    [
+        [[1, 2, 3],[[1, 2, 3],'test']],  # 注意非PEP8书写，但输出会被规范
+
+    ]
+)
+def test_N38_method_overloading_2(set_val,expected):
+    n38=N38_method_overloading_2.GetSetList(set_val)
+    n38.set_val('test')
+    assert 'test'==n38.get_val() and expected==n38.get_vals()

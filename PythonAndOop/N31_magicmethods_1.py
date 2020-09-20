@@ -1,4 +1,4 @@
-class PrintList(object):
+class PrintList:
 
     def __init__(self, my_list):
         self.mylist = my_list
@@ -8,6 +8,8 @@ class PrintList(object):
 
 
 if __name__ == '__main__':
-    printlist = PrintList(["a", "b", "c"])
-    print(printlist.__repr__())
-    print(printlist)
+    # printlist = PrintList([1,2,3])
+    # print(printlist.__repr__())
+    # print(printlist.mylist)
+    # print(printlist==printlist.__repr__())
+    print('[1]'=='[1]')
