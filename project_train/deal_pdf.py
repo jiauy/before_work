@@ -2,6 +2,9 @@ import io
 import os
 import re
 import time
+import gevent
+from gevent import monkey
+monkey.patch_all()
 import requests
 
 #网站自带的函数封装了一个类,改变了一下保存路径,发现一个bug:zipfile没有open属性
@@ -12,7 +15,8 @@ class Pdf2TableAPI:
         url = 'http://qianliyan2.memect.cn:6111/api/{}'.format(api)
         query = {
             # 表示异步执行，所以需要通过轮训获得结果
-            'async': 'true',
+            # 'async': 'false', #true
+            'async': 'true', #true
             'output-format': output_format
         }
         headers = {}
@@ -36,8 +40,10 @@ class Pdf2TableAPI:
         # 等待结果
         if result and result.get('task'):
             # result={task:{id:''}}
+            print('开始获取任务--{}--的结果'.format(result.get('task')))
             self.get_result(api, result.get('task').get('id'), company_name, file_name_without_pdf,
                             output_format=output_format)
+            print('任务--{}--完成'.format(result.get('task')))
         else:
             # 执行失败等
             pass
@@ -50,6 +56,8 @@ class Pdf2TableAPI:
         }
         while True:
             r = requests.post(url, params=query)
+            print(r.status_code)
+            print(r.text)
             if r.status_code == 200:
                 if output_format in ('zip', 'bz2'):
                     # 这里演示如何直接解压，也可以把zip文件保存到本地
@@ -112,42 +120,33 @@ class DealPdf2Table(Pdf2TableAPI):
     def deal_pdf_2table_with_1threading(self, company_index):
         # company_files
         company_path = os.path.join(self.base_dir, self.company_names[company_index])
-        print('公司名字为:{}'.format(self.company_names[company_index]))
         #第二次更新会含有以前解压好的文件夹,需要处理掉
         files_list = os.listdir(company_path)
-        print(files_list)
+        count=0
         for file_name in files_list:
-            print(file_name)
+            count+=1
             try:
                 if re.findall('回复', file_name)[0] == '回复' and file_name[-3:]=='pdf':
                     file_path = os.path.join(self.base_dir, self.company_names[company_index], file_name)
-                    if not os.path.exists(file_path):
+                    #没有文件对应的目录才可以处理,否则就是之前处理过了
+                    if not os.path.exists(file_path[:-4]):
                         self.invoke_api(api='pdf2table', filename=file_path, company_name=self.company_names[company_index],
                                         file_name_without_pdf=file_name[:-4])
+                        print('{}-有-{}-个文件,当前处理进度为--{}/{}--异步提交成功'.format(self.company_names[company_index], len(files_list),
+                                                                  count, len(files_list)))
             except:
-                print('该文件没有回复字样')
+                print('{}-有-{}-个文件,当前处理进度为--{}/{}--无回复字样或该文件是已处理好的目录'.format(self.company_names[company_index],len(files_list),count,len(files_list)))
 
-    # def deal_pdf_2table_with_multithreading(self, company_index):
-    #     # company_files
-    #     company_path = os.path.join(self.base_dir, self.company_names[company_index])
-    #     print('公司名字为:{}'.format(self.company_names[company_index]))
-    #     #第二次更新会含有以前解压好的文件夹,需要处理掉
-    #     files_list = os.listdir(company_path)
-    #     print(files_list)
-    #     for file_name in files_list:
-    #         print(file_name)
-    #         try:
-    #             if re.findall('回复', file_name)[0] == '回复' and file_name[-3:]=='pdf':
-    #                 file_path = os.path.join(self.base_dir, self.company_names[company_index], file_name)
-    #                 if not os.path.exists(file_path):
-    #                     self.invoke_api(api='pdf2table', filename=file_path, company_name=self.company_names[company_index],
-    #                                     file_name_without_pdf=file_name[:-4])
-    #         except:
-    #             print('该文件没有回复字样')
+
+    def deal_pdf_2table_with_multithreading(self):
+        missions=[]
+        for company_index in range(len(self.company_names)):
+            missions.append(gevent.spawn(self.deal_pdf_2table_with_1threading(company_index)))
+        gevent.joinall(missions)
 
 
 if __name__ == '__main__':
-    companys_path=os.path.join(os.getcwd(),'company')
-    companys_number=len(os.listdir(companys_path))
-    for company_index in range(companys_number):
-        DealPdf2Table().deal_pdf_2table_with_1thread(company_index)
+    t1=time.time()
+    DealPdf2Table().deal_pdf_2table_with_multithreading()
+    t2=time.time()
+    print('本次任务一共耗时--{}--秒'.format(t2-t1))
