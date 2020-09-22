@@ -2,10 +2,7 @@ import io
 import os
 import re
 import time
-import zipfile
-
 import requests
-
 
 #网站自带的函数封装了一个类,改变了一下保存路径,发现一个bug:zipfile没有open属性
 class Pdf2TableAPI:
@@ -112,25 +109,41 @@ class DealPdf2Table(Pdf2TableAPI):
         self.headers = {}
         self.url = 'http://qianliyan2.memect.cn:6111/api/pdf2table'
 
-    def deal_pdf_2table_with_1thread(self, company_index):
+    def deal_pdf_2table_with_1threading(self, company_index):
         # company_files
         company_path = os.path.join(self.base_dir, self.company_names[company_index])
         print('公司名字为:{}'.format(self.company_names[company_index]))
+        #第二次更新会含有以前解压好的文件夹,需要处理掉
         files_list = os.listdir(company_path)
         print(files_list)
         for file_name in files_list:
             print(file_name)
             try:
-                if re.findall('回复', file_name)[0] == '回复':
+                if re.findall('回复', file_name)[0] == '回复' and file_name[-3:]=='pdf':
                     file_path = os.path.join(self.base_dir, self.company_names[company_index], file_name)
-                    print(file_path)
-
-                    print('开始调用invoke_api')
-                    self.invoke_api(api='pdf2table', filename=file_path, company_name=self.company_names[company_index],
-                                    file_name_without_pdf=file_name[:-4])
-                    # api, filename,company_name,file_name_without_pdf
+                    if not os.path.exists(file_path):
+                        self.invoke_api(api='pdf2table', filename=file_path, company_name=self.company_names[company_index],
+                                        file_name_without_pdf=file_name[:-4])
             except:
                 print('该文件没有回复字样')
+
+    # def deal_pdf_2table_with_multithreading(self, company_index):
+    #     # company_files
+    #     company_path = os.path.join(self.base_dir, self.company_names[company_index])
+    #     print('公司名字为:{}'.format(self.company_names[company_index]))
+    #     #第二次更新会含有以前解压好的文件夹,需要处理掉
+    #     files_list = os.listdir(company_path)
+    #     print(files_list)
+    #     for file_name in files_list:
+    #         print(file_name)
+    #         try:
+    #             if re.findall('回复', file_name)[0] == '回复' and file_name[-3:]=='pdf':
+    #                 file_path = os.path.join(self.base_dir, self.company_names[company_index], file_name)
+    #                 if not os.path.exists(file_path):
+    #                     self.invoke_api(api='pdf2table', filename=file_path, company_name=self.company_names[company_index],
+    #                                     file_name_without_pdf=file_name[:-4])
+    #         except:
+    #             print('该文件没有回复字样')
 
 
 if __name__ == '__main__':

@@ -1,32 +1,7 @@
 import os
-
 import requests
 import json
 
-
-# 获取有效的按照页面顺序的id和股票名称
-# url='http://www.neeq.com.cn/projectNewsController/infoResult.do?callback=jQuery211_1599964857562'
-
-# 获取pdf http://www.neeq.com.cn/projectNewsController/infoDetailResult.do?id=19&callback=jQuery211_1600008606945
-# son_data={'needFields[]': 'id'}
-# post_args={'page':0,'isNewThree': 1,'sortfield': 'updateDate','sorttype': 'desc','keyword': {'needFields[]': 'id','needFields[]': 'stockName'}}
-# post_args={'page':0,'isNewThree': 1,'sortfield': 'updateDate','sorttype': 'desc','needFields[]': ['id','stockName','companyName']}
-# GET_DATA=requests.post(url,data=post_args)
-# print(GET_DATA.text[25:-2])
-# # print(len(GET_DATA.text))
-# print(type(GET_DATA.text))
-# print(json.loads(GET_DATA.text[25:-2]))
-# post_args={'page':5,'isNewThree': 1,'sortfield': 'updateDate','sorttype': 'desc','needFields[]': 'id'}
-# GET_DATA=requests.post(url,data=post_args)
-# print(GET_DATA.text)
-# print(len(GET_DATA.text))
-# print(len('jQuery211_1599964857562'))
-
-# page_json=json.loads(GET_DATA.text[25:-2])
-# company_name=page_json['listInfo']['content'][0]['companyName']
-# company_id=page_json['listInfo']['content'][0]['id']
-# print(company_name)
-# print(company_id)
 
 class CreateCompanyDirectory:
 
@@ -47,9 +22,9 @@ class CreateCompanyDirectory:
 
     def create_company_directory(self):
         company_num = len(self.json_data['listInfo']['content'])
+        base_dir = os.getcwd()
         for index in range(company_num):
             company_name = self.json_data['listInfo']['content'][index]['companyName']
-            base_dir = os.getcwd()
             dir_path = os.path.join(base_dir, 'company', company_name)
             if not os.path.exists(dir_path):
                 os.mkdir(dir_path)
