@@ -6,7 +6,7 @@ class BaseEnv:
     this_file_path=os.path.realpath(__file__)
     this_file_dir_path=os.path.dirname(this_file_path)
     default_save_path=os.path.join(this_file_dir_path,'PdfDownload')
-    default_download_history_file_absolute_dir_path=os.path.join(this_file_dir_path,'PdfDownload_History')
+    default_download_history_file_absolute_dir_path=os.path.join(default_save_path,'PdfDownloadHistory.json')
 
 class ProductionEnv(BaseEnv):
     pass
