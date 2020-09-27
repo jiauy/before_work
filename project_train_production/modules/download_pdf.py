@@ -10,7 +10,7 @@ from gevent import monkey
 
 monkey.patch_all()
 import requests
-from project_train_production.settings import ProductionEnv
+from project_train_production.settings import Env
 
 
 def reconnet(func):
@@ -29,7 +29,7 @@ def reconnet(func):
                 if ((t2 - t1) // 60) % 2 == 0:
                     logging.info('{}  {}--任务已经等待了--{}--秒'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),str(args) + str(kwargs), (t2 - t1)))
                 try_times += 1
-                if try_times > ProductionEnv.try_times:
+                if try_times > Env.try_times:
                     logging.info(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'  '+str(*args, **kwargs) + '任务重试次数已经超过规定次数')
 
     return inner
@@ -37,9 +37,9 @@ def reconnet(func):
 
 @reconnet
 def totalpages():
-    source_info_url = ProductionEnv.source_info_url
+    source_info_url = Env.source_info_url
     post_args = {'page': 100, 'needFields[]': ['id', 'stockName', 'companyName']}
-    response = requests.post(source_info_url, data=post_args, timeout=ProductionEnv.timeout)
+    response = requests.post(source_info_url, data=post_args, timeout=Env.timeout)
     json_data = json.loads(response.text[25:-2])
     total_pages_num = json_data['listInfo']['totalPages']
     return total_pages_num
@@ -53,9 +53,9 @@ def company_names_and_ids():
         post_args = {'page': page_num, 'isNewThree': 1, 'sortfield': 'updateDate', 'sorttype': 'desc',
                      'needFields[]': ['id', 'stockName', 'companyName']}
         # 建立链接:
-        source_info_url = ProductionEnv.source_info_url
+        source_info_url = Env.source_info_url
         try:
-            response = requests.post(source_info_url, data=post_args, timeout=ProductionEnv.timeout)
+            response = requests.post(source_info_url, data=post_args, timeout=Env.timeout)
         except:
             logging.info('{}  链接超时,获取第{}页信息失败'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),page_num))
         # 提取数据
@@ -71,11 +71,11 @@ def company_names_and_ids():
 class DownloadCompanysWxfhPdfs:
     def __init__(self,
                  company_names_and_ids_dict,
-                 start_date=ProductionEnv.start_date,
-                 end_date=ProductionEnv.end_date,
+                 start_date=Env.start_date,
+                 end_date=Env.end_date,
                  load_download_history=True,
-                 download_history_file_absolute_path=ProductionEnv.download_history_file_absolute_dir_path,
-                 save_path=ProductionEnv.save_path):
+                 download_history_file_absolute_path=Env.download_history_file_absolute_dir_path,
+                 save_path=Env.save_path):
 
         self.company_names_and_ids_dict = company_names_and_ids_dict
         self.start_date = datetime.datetime.strptime(start_date, '%Y-%m-%d')
@@ -83,7 +83,7 @@ class DownloadCompanysWxfhPdfs:
         self.load_download_history = load_download_history
         self.load_download_history_file_absolute_path = download_history_file_absolute_path
         self.save_path = save_path
-        self.pdf_source_info_url = ProductionEnv.pdf_source_info_url
+        self.pdf_source_info_url = Env.pdf_source_info_url
         if self.load_download_history:
             try:
                 with open(self.load_download_history_file_absolute_path, 'r', encoding='utf-8') as f:
@@ -104,7 +104,7 @@ class DownloadCompanysWxfhPdfs:
         pdf_source_post_args = {'id': company_id, 'callback': 'jQuery211_1600008606945'}
         # 容易出现超时错误 502 Bad GateWay
         company_pdfdata_response = requests.post(self.pdf_source_info_url.format(company_id), data=pdf_source_post_args,
-                                                 timeout=ProductionEnv.timeout)
+                                                 timeout=Env.timeout)
         try:
             company_pdfdata_response_json_data = json.loads(company_pdfdata_response.text[25:-2])
         except:
@@ -128,7 +128,7 @@ class DownloadCompanysWxfhPdfs:
                 count += 1
                 if not os.path.exists(file_save_path):
                     with closing(
-                            requests.get(file_absolute_url, stream=True, timeout=ProductionEnv.timeout)) as response:
+                            requests.get(file_absolute_url, stream=True, timeout=Env.timeout)) as response:
                         with open(file_save_path, "wb") as f:
 
                             for chunk in response.iter_content(chunk_size=512):

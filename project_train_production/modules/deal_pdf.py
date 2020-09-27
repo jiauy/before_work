@@ -10,7 +10,7 @@ from gevent import monkey
 
 monkey.patch_all()
 import requests
-from project_train_production.settings import ProductionEnv
+from project_train_production.settings import Env
 
 
 # 网站自带的函数封装了一个类,改变了一下保存路径,发现一个bug:zipfile没有open属性
@@ -119,10 +119,10 @@ class Pdf2TableAPI:
 
 class DealPdf2Table(Pdf2TableAPI):
     def __init__(self,
-                 start_date=ProductionEnv.start_date,
-                 end_date=ProductionEnv.end_date,
-                 source_dir=ProductionEnv.save_path,
-                 output_dir=ProductionEnv.save_path):
+                 start_date=Env.start_date,
+                 end_date=Env.end_date,
+                 source_dir=Env.save_path,
+                 output_dir=Env.save_path):
 
         self.start_date = datetime.datetime.strptime(start_date, '%Y-%m-%d')
         self.enf_date = datetime.datetime.strptime(end_date, '%Y-%m-%d')
@@ -132,7 +132,7 @@ class DealPdf2Table(Pdf2TableAPI):
         # table,wbk,html,html-scale,layout,extract-classes
 
         self.headers = {}
-        self.url = ProductionEnv.Pdf2Table_url
+        self.url = Env.Pdf2Table_url
 
     def __deal1(self, file_name):
         # company_files
@@ -151,7 +151,7 @@ class DealPdf2Table(Pdf2TableAPI):
             logging.info('{}  {}--文件--无回复字样'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),file_name))
 
     def deal(self):
-        his_path = ProductionEnv.download_history_file_absolute_dir_path
+        his_path = Env.download_history_file_absolute_dir_path
         with open(his_path, 'r') as f:
             history = f.read()
         his_dict = json.loads(history)

@@ -11,7 +11,7 @@ class BaseEnv:
     download_history_file_absolute_dir_path=os.path.join(save_path,'PdfDownloadHistory.json')
     timeout=(10,10)
     try_times=3
-    start_date='1990-01-01'
+    start_date=datetime.datetime.now().strftime('%Y-%m-%d')
     end_date=datetime.datetime.now().strftime('%Y-%m-%d')
     log_dir_path=os.path.join(this_file_dir_path,'log')
     if not os.path.exists(log_dir_path):
@@ -19,4 +19,11 @@ class BaseEnv:
     log_path=os.path.join(this_file_dir_path,'log','download_and_deal.log')
 
 class ProductionEnv(BaseEnv):
+    pass
+
+class TestEnv(BaseEnv):
+    start_date='1990-01-01'
+    end_date=datetime.datetime.now().strftime('%Y-%m-%d')
+
+class Env(TestEnv):
     pass
