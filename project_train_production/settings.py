@@ -13,7 +13,10 @@ class BaseEnv:
     try_times=3
     start_date='1990-01-01'
     end_date=datetime.datetime.now().strftime('%Y-%m-%d')
-    log_path=os.makedirs(os.path.join(this_file_dir_path,'log','download_and_deal.log'))
+    log_dir_path=os.path.join(this_file_dir_path,'log')
+    if not os.path.exists(log_dir_path):
+        os.mkdir(log_dir_path)
+    log_path=os.path.join(this_file_dir_path,'log','download_and_deal.log')
 
 class ProductionEnv(BaseEnv):
     pass
