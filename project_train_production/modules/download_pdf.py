@@ -1,4 +1,5 @@
 import datetime
+import logging
 import os
 from contextlib import closing
 import platform
@@ -26,10 +27,10 @@ def reconnet(func):
                 time.sleep(10)
                 t2 = time.time()
                 if ((t2 - t1) // 60) % 2 == 0:
-                    print('{}--任务已经等待了--{}--秒'.format(str(args) + str(kwargs), (t2 - t1)))
+                    logging.info('{}  {}--任务已经等待了--{}--秒'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),str(args) + str(kwargs), (t2 - t1)))
                 try_times += 1
                 if try_times > ProductionEnv.try_times:
-                    print(str(*args, **kwargs) + '任务重试次数已经超过规定次数')
+                    logging.info(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'  '+str(*args, **kwargs) + '任务重试次数已经超过规定次数')
 
     return inner
 
@@ -56,7 +57,7 @@ def company_names_and_ids():
         try:
             response = requests.post(source_info_url, data=post_args, timeout=ProductionEnv.timeout)
         except:
-            print('链接超时,获取第{}页信息失败'.format(page_num))
+            logging.info('{}  链接超时,获取第{}页信息失败'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),page_num))
         # 提取数据
         json_data = json.loads(response.text[25:-2])
         company_num = len(json_data['listInfo']['content'])
@@ -70,9 +71,9 @@ def company_names_and_ids():
 class DownloadCompanysWxfhPdfs:
     def __init__(self,
                  company_names_and_ids_dict,
-                 start_date='1990-01-01',
-                 end_date=datetime.datetime.now().strftime('%Y-%m-%d'),
-                 load_download_history=False,
+                 start_date=ProductionEnv.start_date,
+                 end_date=ProductionEnv.end_date,
+                 load_download_history=True,
                  download_history_file_absolute_path=ProductionEnv.download_history_file_absolute_dir_path,
                  save_path=ProductionEnv.save_path):
 
@@ -84,8 +85,11 @@ class DownloadCompanysWxfhPdfs:
         self.save_path = save_path
         self.pdf_source_info_url = ProductionEnv.pdf_source_info_url
         if self.load_download_history:
-            with open(self.load_download_history_file_absolute_path, 'r', encoding='utf-8') as f:
-                self.download_history = json.loads(f.read())
+            try:
+                with open(self.load_download_history_file_absolute_path, 'r', encoding='utf-8') as f:
+                    self.download_history = json.loads(f.read())
+            except:
+                self.download_history = {}
         else:
             self.download_history = {}
         # print(self.download_history)
@@ -104,7 +108,8 @@ class DownloadCompanysWxfhPdfs:
         try:
             company_pdfdata_response_json_data = json.loads(company_pdfdata_response.text[25:-2])
         except:
-            print('company_pdfdata_response_json_data 加载出错,加载内容为{}'.format(company_pdfdata_response.text[25:-2]))
+            logging.info('{}  company_pdfdata_response_json_data 加载出错,加载内容为{}'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                                                                               company_pdfdata_response.text[25:-2]))
         # wxhf:问询回复
         wxhf_list = company_pdfdata_response_json_data['wxhfhInfo']  # 是一个列表,里面套着字典
         if not os.path.exists(self.save_path):
@@ -119,7 +124,6 @@ class DownloadCompanysWxfhPdfs:
                 file_relative_url = pdf_info['destFilePath']
                 file_absolute_url = 'http://www.neeq.com.cn' + file_relative_url
                 file_name = file_title + '.pdf'
-
                 file_save_path = os.path.join(self.save_path, file_name)
                 count += 1
                 if not os.path.exists(file_save_path):
@@ -130,11 +134,11 @@ class DownloadCompanysWxfhPdfs:
                             for chunk in response.iter_content(chunk_size=512):
                                 if chunk:
                                     f.write(chunk)
-                    print('{}--的第--{}/{}个--文件--《{}.pdf》--下载完毕'.format(company_name, count, pdf_file_num, file_title))
+                    logging.info('{}  {}--的第--{}/{}个--文件--《{}.pdf》--下载完毕'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),company_name, count, pdf_file_num, file_title))
                 if not file_name in self.download_history[company_name].keys():
                     self.download_history[company_name][file_name] = pdf_info['publishDate']  # 2020-09-09
                 else:
-                    print('{}--的第--{}/{}个--文件--《{}.pdf》--已存在'.format(company_name, count, pdf_file_num, file_title))
+                    logging.info('{}  {}--的第--{}/{}个--文件--《{}.pdf》--已存在'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),company_name, count, pdf_file_num, file_title))
         # print(self.download_history)
 
     def download(self):
@@ -149,7 +153,9 @@ class DownloadCompanysWxfhPdfs:
 
 
 if __name__ == '__main__':
+    import logging
+    logging.basicConfig(filename='pdf_download.log',level=logging.DEBUG)# 可选filemode='w')
     t1 = time.time()
-    DownloadCompanysWxfhPdfs(company_names_and_ids(), load_download_history=True).download()
+    DownloadCompanysWxfhPdfs(company_names_and_ids()).download()
     t2 = time.time()
-    print('本次玩从头下载共耗时--{}--秒'.format(t2 - t1))
+    logging.info('{}  本次玩从头下载共耗时--{}--秒'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),(t2 - t1)))

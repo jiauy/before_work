@@ -1,12 +1,20 @@
-- DownloadCompanysWxfhPdfs:在默认目录下，下载所有pdf文件
-- DownloadCompanysWxfhPdfsByTime:在默认目录下，下载指定时间的pdf文件
-- 每天查询文件，如果有更新，就下载，判断更新的标准是，文件名不在历史文件中。如果没有历史文件，就全部下载。
-历史文件的格式：
+- download_pdf
+    - @reconnet 重连次数限定
+    - totalpages 获取目标网站有数据的页数
+    - company_names_and_ids 获取目标网站全部公司名称和对应id
+    - DownloadCompanysWxfhPdfs 创建或根据下载历史文件,下载指定日期或日期范围的pdf文件,并创建新的下载历史文件
+    
+- deal_pdf
+    - DealPdf2Table 对指定日期范围的pdf文件进行处理
+    
+```
+下载历史文件的格式：
+
 {
     '公司名称'：
     {
-    'pdf文件名'：文件出版日期,
-    'pdf文件名'：文件出版日期,
-    'pdf文件名'：文件出版日期,
+    'pdf文件名'：'文件出版日期',
+    'pdf文件名'：'文件出版日期',
+    'pdf文件名'：'文件出版日期',
     },
 }

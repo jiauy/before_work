@@ -1,18 +1,23 @@
-from modules.download_pdf import DownloadCompanysWxfhPdfs,company_names_and_ids
+from project_train_production.modules.deal_pdf import DealPdf2Table
+from project_train_production.modules.download_pdf import DownloadCompanysWxfhPdfs,company_names_and_ids
 from apscheduler.schedulers.blocking import BlockingScheduler
+import datetime
+import logging
+from project_train_production.settings import ProductionEnv
 
-
-def job1():
-    print('这是job1')
-
-
-def job2():
-    print('这是job2')
+def main():
+    logging.basicConfig(filename=ProductionEnv.log_path, filemode='w', level=logging.DEBUG)  # 可选filemode='w')
+    DownloadCompanysWxfhPdfs(company_names_and_ids()).download()
+    DealPdf2Table().deal()
 
 
 if __name__ == '__main__':
-    scheduler = BlockingScheduler()
-    scheduler.add_job(DownloadCompanysWxfhPdfs(company_names_and_ids()).download, 'interval', max_instances=100,seconds=5, id='test_job1')
-    scheduler.add_job(DownloadCompanysWxfhPdfs(company_names_and_ids()).download, 'interval', max_instances=100,seconds=10, id='test_job2')
-    scheduler.start()
+    try:
+        scheduler = BlockingScheduler()
+        scheduler.add_job(main, 'interval', max_instances=100,seconds=60*60*24, id='download_and_deal_today_pdf_to_table')
+        scheduler.start()
+    except:
+        scheduler.shutdown()
 
+    #for test
+    # main()

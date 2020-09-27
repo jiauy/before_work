@@ -1,0 +1,5 @@
+/beforework_env
+/PythonAndOop/.pytest_cache
+/PythonAndOop/ceshi.py
+*/*.log
+*/*/*.log
